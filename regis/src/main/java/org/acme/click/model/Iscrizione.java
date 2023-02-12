@@ -23,8 +23,8 @@ public class Iscrizione extends PanacheMongoEntity {
         }
     }
 
-    public static Iscrizione findByCodiceFiscale(String cf){
-        return find("codiceFiscale", cf).firstResult();
+    public static List<Iscrizione> findByCodiceFiscale(String cf){
+        return Iscrizione.list("codiceFiscale", cf);
     }
 
     public static Iscrizione findByCodiceProtocollo(String cp){

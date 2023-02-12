@@ -68,7 +68,7 @@ public class ArchivioIscrizioniResource {
 
     @GET
     @Path("/cf/{cf}")
-    public Iscrizione searchByCF(@PathParam("cf")String cf) {
+    public List<Iscrizione> searchByCF(@PathParam("cf")String cf) {
         return Iscrizione.findByCodiceFiscale(cf);
     }
     

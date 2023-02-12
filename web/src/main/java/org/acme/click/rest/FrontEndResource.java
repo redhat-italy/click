@@ -7,6 +7,9 @@ import org.acme.click.rest.client.VerificaCodiceFiscaleService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
+import java.util.List;
+
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -33,6 +36,7 @@ public class FrontEndResource {
         Iscrizione iscrizione = new Iscrizione();
         iscrizione.codiceFiscale = cf;
         iscrizione.errore = "nessuno";
+        iscrizione.premio = "nessuno";
         iscrizione.codiceProtocollo = "non protocollato";
         iscrizione.tipo = "imperative";
         boolean isValid = cofis.checkCodiceFiscale(cf);
@@ -52,6 +56,12 @@ public class FrontEndResource {
             iscrizione.errore = "Codice Fiscale non valido";
             return iscrizione;            
         }
+    }
+
+    @GET
+    @Path("/check/{cf}")
+    public List<Iscrizione> checkSubscriptions(@PathParam("cf") String cf) {
+        return regis.listaIscrizioni(cf);
     }
 
 }

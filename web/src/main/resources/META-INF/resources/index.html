@@ -37,11 +37,17 @@
                 <button class="btn btn-outline-primary" type="button" id="button_save_cf">Partecipa</button>
             </div>
 
-            <div id="sa_list" style="background-image: url(img/sa_bg.png); background-repeat: repeat-y;"></div>
+            <div class="alert alert-danger" id="save_error" role="alert" style="display:none;" ></div>
+            <div class="alert alert-success" id="save_ok" role="alert" style="display:none;" >Ok. Trip successfully saved!</div>
 
-            <br>            
-
-            <div id="seniorsa_list" style="background-image: url(img/ssa_bg.png); background-repeat: repeat-y;"></div>
+            <div id="requestTableContainer" class="container" style="display:none">
+                <table class="table table-condensed table-hover" id="tbl_reqs">
+                    <thead>
+                        <tr><th>Protocollo</th><th>CF</th><th>premio</th><th>tipo</th></tr>
+                    </thead>
+                    <tbody id="reqsTableBody"></tbody>
+                </table>
+            </div>    
 
         </div>
     </main>
@@ -58,25 +64,12 @@
 
     $(document).ready(function(){
 
-        checkSession(startIndexPage);
-
-        $("#button_save_uuid").on("click", function () {
-            localStorage.setItem("uuid", $('#input_uuid').val());
-            $('#uuidform').hide();
-            loadRanges();
+        $("#button_save_cf").on("click", function () {
+            $(this).prop('disabled', true);
+            subscribe($('#input_cf').val(), showSubscribeResult);
         });
 
-        $("#inputLocationName").change(function(ev){
-            locationName = $(this).val();
-            var val = ev.target.value
-            distance = $("#tList option[value='" + val + "']").text();
-            $('#inputDistance').val(distance);
-        });
-
-        $(document).on("click", ".delete_trip", function () {
-            deleteTrip(this.dataset.id);
-            $(this).parent().remove();
-        });
+        checkActiveRequests();
 
     });
 
