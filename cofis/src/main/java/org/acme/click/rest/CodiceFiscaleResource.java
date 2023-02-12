@@ -7,14 +7,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.acme.click.model.CodiceFiscale;
+import org.jboss.logging.Logger;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class CodiceFiscaleResource {
 
+    private static final Logger LOG = Logger.getLogger("COFIS");
+    
     @GET
     @Path("isValid/{cf}")
     public Boolean check(@PathParam("cf") String cf) {
+        LOG.info("Verifica codice fiscale: " + cf);
         return new CodiceFiscale().setCodiceFiscale(cf).isValid();
     }
 
