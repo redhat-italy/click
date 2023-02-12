@@ -5,4 +5,5 @@ public class Iscrizione {
     public String tipo;
     public String codiceProtocollo;
     public String errore;
+    public String premio;
 }
