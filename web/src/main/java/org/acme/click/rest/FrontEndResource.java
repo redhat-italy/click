@@ -7,6 +7,9 @@ import org.acme.click.rest.client.VerificaCodiceFiscaleService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -28,6 +31,9 @@ public class FrontEndResource {
     ProtocolloService urp;
     @RestClient
     IscrizioneService regis;
+
+    @Channel("requests")
+    Emitter<String> requestEmitter;
 
     @POST
     @Path("/subscribe/{cf}")
@@ -64,4 +70,12 @@ public class FrontEndResource {
         return regis.listaIscrizioni(cf);
     }
 
+    @POST
+    @Path("/request/{cf}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String createRequest(@PathParam("cf") String cf) {
+        LOG.info("Richiesta iscrizione SMART da: " + cf);
+        requestEmitter.send(cf); 
+        return cf; 
+    }
 }
