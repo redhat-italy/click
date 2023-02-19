@@ -2,17 +2,20 @@ package org.acme.click.model;
 
 import java.util.List;
 
-import io.quarkus.mongodb.panache.PanacheMongoEntity;
-import io.quarkus.mongodb.panache.common.MongoEntity;
+import javax.persistence.Entity;
+import javax.transaction.Transactional;
 
-@MongoEntity(collection="iscrizioni")
-public class Iscrizione extends PanacheMongoEntity {
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+@Entity
+public class Iscrizione extends PanacheEntity {
     public String codiceFiscale;
     public String tipo;
     public String codiceProtocollo;
     public String errore;
     public String premio;
 
+    @Transactional
     public static Iscrizione safetySave(Iscrizione iscrizione){
         Iscrizione localIscrizione = find("codiceFiscale = ?1 and tipo = ?2", iscrizione.codiceFiscale, iscrizione.tipo).firstResult();
         if(localIscrizione == null){
@@ -39,7 +42,7 @@ public class Iscrizione extends PanacheMongoEntity {
         Iscrizione iscrizione = find("codiceProtocollo", cp).firstResult();
         if(iscrizione != null){
             iscrizione.premio = premio;
-            iscrizione.update();
+            Iscrizione.update("premio = ?1 where codiceProtocollo = ?2", cp, premio);
         }
         return iscrizione;
     }

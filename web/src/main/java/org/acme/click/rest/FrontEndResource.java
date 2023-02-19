@@ -12,6 +12,7 @@ import org.eclipse.microprofile.reactive.messaging.Emitter;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -32,7 +33,7 @@ public class FrontEndResource {
     @RestClient
     IscrizioneService regis;
 
-    @Channel("requests")
+    @Inject @Channel("requests")
     Emitter<String> requestEmitter;
 
     @POST

@@ -1,15 +1,18 @@
 package org.acme.click.rest;
 
 import org.acme.click.model.Iscrizione;
-import org.bson.types.ObjectId;
+import org.jboss.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
@@ -22,23 +25,21 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class ArchivioIscrizioniResource {
 
+    private static final Logger LOG = Logger.getLogger("COFIS");
+
     @GET
     public List<Iscrizione> list() {
         return Iscrizione.listAll();
     }
 
     @POST
+    @Transactional
     public Iscrizione create(Iscrizione iscrizione) {
         return Iscrizione.safetySave(iscrizione);
     }
 
     @PUT
-    @Path("/{id}")
-    public void update(String id, Iscrizione iscrizione) {
-        iscrizione.update();
-    }
-    
-    @PUT
+    @Transactional
     @Path("/assegna/{cp}/{premio}")
     public Iscrizione updatePremio(@PathParam("cp")String cp, @PathParam("premio")String premio) {
         Iscrizione iscrizione = Iscrizione.findByCodiceProtocollo(cp);
@@ -46,14 +47,15 @@ public class ArchivioIscrizioniResource {
             throw new NotFoundException();
         }
         iscrizione.premio = premio;
-        iscrizione.update();
+        iscrizione.persist();
         return iscrizione;
     }
     
     @DELETE
-    @Path("/{id}")
-    public void delete(@PathParam("id")String id) {
-        Iscrizione iscrizione = Iscrizione.findById(new ObjectId(id));
+    @Transactional
+    @Path("/{cp}")
+    public void delete(@PathParam("cp")String cp) {
+        Iscrizione iscrizione = Iscrizione.findByCodiceProtocollo(cp);
         if(iscrizione == null) {
             throw new NotFoundException();
         }
@@ -61,6 +63,7 @@ public class ArchivioIscrizioniResource {
     }
 
     @POST
+    @Transactional
     @Path("/drop")
     public void drop() {
         Iscrizione.deleteAll();
@@ -82,6 +85,38 @@ public class ArchivioIscrizioniResource {
     @Path("/premi/{premio}")
     public List<Iscrizione> premiati(@PathParam("premio") String premio) {
         return Iscrizione.findByPremio(premio);
+    }
+
+    @GET
+    @Path("/count")
+    public String count() {
+        return Long.toString(Iscrizione.count());
+    }
+    
+    @POST
+    @Transactional
+    @Path("/estrazione/{premio}/{qta}")
+    public void lottery(@PathParam("premio")String premio, @PathParam("qta")String qta) {
+        List<Integer> ndx = new ArrayList<Integer>();
+        List<Iscrizione> list = Iscrizione.listAll();
+        LOG.info("[REGIS] numero di iscritti: " + list.size());
+        Random random = new Random();
+        for(int i=0; i<list.size(); i++){
+            ndx.add(random.nextInt(list.size()));
+        }
+        int counter = 0;
+        for (Iscrizione iscrizione : list) {
+            if(ndx.contains(counter++)){
+                LOG.info("[REGIS] premio per: " + iscrizione.codiceProtocollo);
+                updatePremio(iscrizione, premio);
+            }            
+        }
+    }    
+
+    private void updatePremio(Object iscrizione, String premio){
+        Iscrizione i = (Iscrizione)iscrizione;
+        i.premio = premio;
+        i.persist();    
     }
 
 }
