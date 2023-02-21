@@ -24,6 +24,7 @@ public class RequestProcessor {
             LOG.info("[COFIS] codice fiscale valido: " + codiceFiscale.codice);
             return theRequest;
         }
+        LOG.info("[COFIS] codice fiscale non valido: " + theRequest);
         return null;
     }
 }
