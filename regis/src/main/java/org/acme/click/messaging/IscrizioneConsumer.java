@@ -21,6 +21,8 @@ public class IscrizioneConsumer {
         iscrizione.codiceFiscale = record.key();
         iscrizione.codiceProtocollo = record.value();
         iscrizione.tipo = "reactive";
+        iscrizione.errore = "";
+        iscrizione.premio = "";
         Iscrizione result = Iscrizione.safetySave(iscrizione);
         if(result == null){
             LOG.info("[Iscrizione Consumer] iscrizione con codice protocollo: " + record.value() + " scartata.");
