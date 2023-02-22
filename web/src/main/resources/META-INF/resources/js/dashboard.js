@@ -54,7 +54,7 @@ function showReactiveSubscribeResult(cf) {
     $("#save_ok").fadeIn();
     window.setTimeout(function () { 
         $("#save_ok").fadeOut();
-        $("#button_save_cf").prop('disabled', false);
+        $("#button_reactive_save_cf").prop('disabled', false);
     }, 4000);
 };
 
