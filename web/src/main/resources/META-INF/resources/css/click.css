@@ -58,6 +58,16 @@ hr.correct {
     border-radius: 4px;
 }
 
+.info {
+	background: #f8f8f8;
+	color: #454545;
+	border: 1px solid;
+	border-color: lightgray lightgray lightgray lightslategray;
+	border-width: thin thin thin 4px;
+	padding: 5px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
 
 
 

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Click Day Platform Simulator">
         <meta name="author" content="Andrea Leoncini from Bootstrap examples">
-        <title>Win a T-Shirt</title>
+        <title>Reactive variant of the app</title>
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sticky-footer-navbar/">        
 
@@ -30,18 +30,21 @@
             <br><br>
             <p><img src="img/mad_logo.png"></p>
             <h1 style="color: red;">Vinci un fantastico gadget Red Hat</h1>
-            <p class="lead">inserisci il codice fiscale e memorizza il numero di protocollo, potrai vincere un fantastico gadget della Red Hat</p>
+            <p class="lead">inserisci il codice fiscale (ver. reactive) potrai vincere un fantastico gadget della Red Hat</p>
 
             <div id="cfform" class="input-group mb-3">
                 <input id="input_cf" type="text" class="form-control" placeholder="Prego inserire un codice fiscale valido" aria-label="Prego inserire un codice fiscale valido" aria-describedby="basic-addon2">
-                <button class="btn btn-outline-primary" type="button" id="button_save_cf">Partecipa</button>
+                <button class="btn btn-outline-primary" type="button" id="button_reactive_save_cf">Partecipa</button>
             </div>
 
-            <div class="alert alert-danger" id="save_error" role="alert" style="display:none;" ></div>
-            <div class="alert alert-success" id="save_ok" role="alert" style="display:none;" ></div>
+            <div class="alert alert-danger" id="save_error" role="alert" style="display:none;"></div>
+            <div class="alert alert-success" id="save_ok" role="alert" style="display:none;"></div>
 
             <div id="imperative_mode" class="info">
                 <p><span style="font-size: 0.8em; font-weight: bold;">imperative - protocollo numero:</span><br><span id="codiceProtocolloClassic" style="font-size: 1.2em; font-weight: normal; color: blue;">-</span></p>
+            </div>
+            <div id="reactive_mode" class="info">
+                <p><span style="font-size: 0.8em; font-weight: bold;">reactive - protocollo numero:</span><br><span id="codiceProtocolloReactive" style="font-size: 1.2em; font-weight: normal; color: blue;">-</span></p>
             </div>
 
         </div>
@@ -59,9 +62,9 @@
 
     $(document).ready(function(){
 
-        $("#button_save_cf").on("click", function () {
+        $("#button_reactive_save_cf").on("click", function () {
             $(this).prop('disabled', true);
-            subscribe($('#input_cf').val(), showSubscribeResult);
+            subscribeReactive($('#input_cf').val(), showReactiveSubscribeResult);
         });
 
         checkActiveRequests();
