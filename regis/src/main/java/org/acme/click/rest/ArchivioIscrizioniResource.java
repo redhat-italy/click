@@ -98,19 +98,17 @@ public class ArchivioIscrizioniResource {
     @Path("/estrazione/{premio}/{qta}")
     public void lottery(@PathParam("premio")String premio, @PathParam("qta")String qta) {
         int numb = Integer.valueOf(qta);
-        List<Integer> ndx = new ArrayList<Integer>();
         List<Iscrizione> list = Iscrizione.listAll();
-        LOG.info("[REGIS] numero di iscritti: " + list.size());
+
+        Iscrizione[] array = new Iscrizione[list.size()];
+        list.toArray(array); // fill the array
+
         Random random = new Random();
         for(int i=0; i<numb; i++){
-            ndx.add(random.nextInt(list.size()));
-        }
-        int counter = 0;
-        for (Iscrizione iscrizione : list) {
-            if(ndx.contains(counter++)){
-                LOG.info("[REGIS] premio per: " + iscrizione.codiceProtocollo);
-                updatePremio(iscrizione, premio);
-            }            
+            int luckyNumber = random.nextInt(list.size());
+            Iscrizione winner = array[luckyNumber];
+            LOG.info("[REGIS] premio per: " + winner.codiceProtocollo);
+            updatePremio(winner, premio);
         }
     }    
 
