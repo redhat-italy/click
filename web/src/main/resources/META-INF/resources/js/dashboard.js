@@ -1,4 +1,5 @@
-var STORE_ORIGIN = window.location.origin;
+//var STORE_ORIGIN = window.location.origin;
+var STORE_ORIGIN = 'http://web-click.apps.playground.rhocplab.com/'
 
 function subscribe(cf, callback) {
     var theUrl = STORE_ORIGIN + '/subscribe/' + cf;
@@ -27,8 +28,8 @@ function subscribeReactive(cf, callback) {
 };
 
 function showSubscribeResult(iscrizione) {
-    if(iscrizione.errore == 'nessuno'){
-        localStorage.setItem("codiceFiscale", iscrizione.codiceFiscale);
+    localStorage.setItem("codiceFiscale", iscrizione.codiceFiscale);
+    if((iscrizione.errore == 'nessuno') || (iscrizione.errore == '')){
         var content = 'Richiesta registrata con codice di protocollo: <b>' + iscrizione.codiceProtocollo + '</b>';
         $("#save_ok").html(content);
         $("#save_ok").fadeIn();
@@ -60,16 +61,19 @@ function showReactiveSubscribeResult(cf) {
 
 function checkActiveRequests() {
     var cf = localStorage.getItem("codiceFiscale");
-    var theUrl = STORE_ORIGIN + '/check/' + cf;
-    $.ajax({
-        url: theUrl,
-        type: 'GET',
-        dataType: 'json',
-        complete: function(response, status, xhr){
-            var list = jQuery.parseJSON(response.responseText);
-            displaySubscriptions(list);
-        }
-    });
+    if((cf != null) || (cf.length == 16)){
+        console.log("====> CF: " + cf);
+        var theUrl = STORE_ORIGIN + '/check/' + cf;
+        $.ajax({
+            url: theUrl,
+            type: 'GET',
+            dataType: 'json',
+            complete: function(response, status, xhr){
+                var list = jQuery.parseJSON(response.responseText);
+                displaySubscriptions(list);
+            }
+        });
+    }
     setTimeout(checkActiveRequests, 5000);
 }
 
@@ -86,11 +90,19 @@ function displaySubscription(iscrizione) {
         if(iscrizione.codiceProtocollo != current){
             $('#codiceProtocolloClassic').text(iscrizione.codiceProtocollo);
         }
+        if((iscrizione.premio != null) && (iscrizione.premio.length > 0)){
+            var contentPremio = '<br>PREMIO: ' + iscrizione.premio;
+            $('#premioClassic').text(contentPremio);
+        }
     }
     if(iscrizione.tipo == 'reactive'){
         current = $('#codiceProtocolloReactive').text();
         if(iscrizione.codiceProtocollo != current){
             $('#codiceProtocolloReactive').text(iscrizione.codiceProtocollo);
+        }
+        if((iscrizione.premio != null) && (iscrizione.premio.length > 0)){
+            var contentPremio = '<br>PREMIO: ' + iscrizione.premio;
+            $('#premioReactive').text(contentPremio);
         }
     }
 };
