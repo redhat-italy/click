@@ -46,5 +46,5 @@ function addSubToTable(sub) {
     rowContent += '<td>' + sub.tipo + '</td>';
     rowContent += '<td>' + sub.premio + '</td>';
     rowContent += '</tr>';
-    $('#tbl_trips  tbody').append(rowContent);
+    $('#tbl_subs  tbody').append(rowContent);
 };
