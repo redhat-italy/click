@@ -97,11 +97,12 @@ public class ArchivioIscrizioniResource {
     @Transactional
     @Path("/estrazione/{premio}/{qta}")
     public void lottery(@PathParam("premio")String premio, @PathParam("qta")String qta) {
+        int numb = Integer.valueOf(qta);
         List<Integer> ndx = new ArrayList<Integer>();
         List<Iscrizione> list = Iscrizione.listAll();
         LOG.info("[REGIS] numero di iscritti: " + list.size());
         Random random = new Random();
-        for(int i=0; i<list.size(); i++){
+        for(int i=0; i<numb; i++){
             ndx.add(random.nextInt(list.size()));
         }
         int counter = 0;
