@@ -1,5 +1,4 @@
-//var STORE_ORIGIN = window.location.origin;
-var STORE_ORIGIN = 'http://web-click.apps.playground.rhocplab.com/'
+var STORE_ORIGIN = window.location.origin;
 
 function subscribe(cf, callback) {
     var theUrl = STORE_ORIGIN + '/subscribe/' + cf;

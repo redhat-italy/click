@@ -42,9 +42,9 @@ public class FrontEndResource {
         LOG.info("Richiesta iscrizione da: " + cf);
         Iscrizione iscrizione = new Iscrizione();
         iscrizione.codiceFiscale = cf;
-        iscrizione.errore = "nessuno";
-        iscrizione.premio = "nessuno";
-        iscrizione.codiceProtocollo = "non protocollato";
+        iscrizione.errore = "";
+        iscrizione.premio = "";
+        iscrizione.codiceProtocollo = "";
         iscrizione.tipo = "imperative";
         boolean isValid = cofis.checkCodiceFiscale(cf);
         if(isValid){
