@@ -89,9 +89,9 @@ function displaySubscription(iscrizione) {
         if(iscrizione.codiceProtocollo != current){
             $('#codiceProtocolloClassic').text(iscrizione.codiceProtocollo);
         }
-        if((iscrizione.premio != null) && (iscrizione.premio.length > 0)){
-            var contentPremio = '<br>PREMIO: ' + iscrizione.premio;
-            $('#premioClassic').text(contentPremio);
+        current = $('#premioClassic').text();
+        if((iscrizione.premio != null) && (iscrizione.premio != current)){
+            $('#premioClassic').text(iscrizione.premio);
         }
     }
     if(iscrizione.tipo == 'reactive'){
@@ -99,9 +99,9 @@ function displaySubscription(iscrizione) {
         if(iscrizione.codiceProtocollo != current){
             $('#codiceProtocolloReactive').text(iscrizione.codiceProtocollo);
         }
-        if((iscrizione.premio != null) && (iscrizione.premio.length > 0)){
-            var contentPremio = '<br>PREMIO: ' + iscrizione.premio;
-            $('#premioReactive').text(contentPremio);
+        current = $('#premioReactive').text();
+        if((iscrizione.premio != null) && (iscrizione.premio != current)){
+            $('#premioReactive').text(iscrizione.premio);
         }
     }
 };
