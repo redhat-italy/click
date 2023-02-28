@@ -1,7 +1,7 @@
 # click
 Una applicazione demo che simula un sistema di gestione di un ipotetico Click Day.
 Utilizzabile anche per una gestione lotterie.
-Praticamente l'applicazione è composta da alcuni micro servizi che registrano le richieste di partecipazione. Tra le richieste posso poi essere sorteggiate alcune di esse per assegnarre un reward o premio. vediamo più in dettaglio i moduli.
+Praticamente l'applicazione è composta da alcuni micro servizi, basati su [Quarkus](https://quarkus.io/) che registrano le richieste di partecipazione. Tra le richieste possono poi essere sorteggiate alcune di esse per assegnare un reward o premio. vediamo più in dettaglio i moduli.
 
 ### REGIS
 E' il modulo che registra le richieste di partecipazione. Espone un end-point ReST che accetta l'invio di un oggetto **Iscrizione** e lo salva su un database relazionale per poter essere poi riutilizzato da altre applicazioni. Nel caso specifico della lotteria alcune delle iscrizioni possono essere sorteggiate. In questa implementazione in realta' il database è una istanza *effimera* di un DB H2 (ovvero volatile, quindi se si riavvia il POD si perdono i contenuti) che altri non è che un in-memory-db contenuto nel servizio stesso.
